@@ -1,4 +1,4 @@
-import { fetchGitHubUser } from './api.js';
+import { fetchGitHubUser, fetchGitHubUserRepos } from './api.js';
 import { showLoading, clearResults, renderProfile, showAlert } from './ui.js';
 
 const input = document.getElementById('input-search');
@@ -13,7 +13,8 @@ async function handleSearch() {
 
     try {
         const data = await fetchGitHubUser(userName);
-        renderProfile(profileResults, data, userName);
+        const repos = await fetchGitHubUserRepos(userName);
+        renderProfile(profileResults, data, repos, userName);
     } catch (err) {
         if (err && err.message === 'not_found') {
             showAlert('Usuário não encontrado! Por favor, verifique o nome digitado.');
